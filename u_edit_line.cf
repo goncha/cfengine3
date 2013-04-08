@@ -1,0 +1,28 @@
+########################################
+# Replace all lines by a single line
+########################################
+bundle edit_line replace_all_by_line(line)
+{
+  delete_lines:
+    ".*"
+      comment => "Truncate file";
+
+  insert_lines:
+    "$(line)"
+      comment => "Append line to file after truncating";
+}
+
+
+########################################
+# Replace all lines by list of lines
+########################################
+bundle edit_line replace_all_by_lines(list)
+{
+  delete_lines:
+    ".*"
+      comment => "Truncate file";
+
+  insert_lines:
+    "$(list)"
+      comment => "Append lines to file after truncating";
+}

@@ -1,0 +1,48 @@
+body common control
+{
+
+  bundlesequence => { "main" };
+
+  inputs => { 
+    "cfengine_stdlib.cf",
+    "u_edit_line.cf",
+  };
+
+}
+
+
+########################################
+# Test
+########################################
+bundle agent main
+{
+
+vars:
+  "test_file" string => "/tmp/cf3_ex_replace_all_by_lines";
+
+  "lines" slist => {
+    "This is first line.",
+    "This is second line.",
+    "This is another line.",
+  };
+
+files:
+
+  "$(test_file)"
+    comment => "Create test file",
+    create => "true",
+    classes => if_repaired("test_file_created");
+
+  "$(test_file)"
+    comment => "Test of replace_all_by_lines",
+    edit_line => replace_all_by_lines(@(main.lines)),
+    classes => if_repaired("replace_all_by_lines_called");
+
+reports:
+
+  test_file_created::
+  "Test file $(test_file) has been created.";
+
+  replace_all_by_lines_called::
+  "replace_all_by_lines has been called.";
+}
